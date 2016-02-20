@@ -29,11 +29,25 @@
 <div ng-controller="tableCtrl" class="container">
     <div class="row">
         <div class="col-md-12">
-            {{  }}
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <td>ID</td>
+                        <td>Name</td>
+                        <td>Capacity</td>
+                    </tr>
+                </thead>
+                <tbody >
+                    <tr ng-repeat="car in cars">
+                        <td>{{ car.id }}</td>
+                        <td>{{ car.name }}</td>
+                        <td>{{ car.capacity }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
-
 
 <script src="/bower_components/jquery/dist/jquery.min.js"></script>
 <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>

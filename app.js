@@ -6,30 +6,12 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var pg = require('pg');
 var routes = require('./routes/index');
-var users = require('./routes/users');
+var cars = require('./routes/cars');
 var app = express();
 
 // Static Serving
 app.use("/", express.static(__dirname));
 app.use('/', express.static(__dirname + '/public'));
-
-// DB Connection
-var conString = "postgres://forkliftUSER:forklift@localhost:5432/forkliftDB";
-
-var client = new pg.Client(conString);
-client.connect(function(err) {
-  if(err) {
-    return console.error('could not connect to postgres', err);
-  }
-  client.query('SELECT * FROM cars', function(err, result) {
-    if(err) {
-      return console.error('error running query', err);
-    }
-    //console.log(result);
-    //output: Tue Jan 15 2013 19:12:47 GMT-600 (CST)
-    client.end();
-  });
-});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -44,7 +26,28 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-app.use('/users', users);
+
+app.use('/api/cars', function(req, res) {
+
+  var conString = "postgres://forkliftUSER:forklift@localhost:5432/forkliftDB";
+
+  var client = new pg.Client(conString);
+  client.connect(function(err) {
+    if(err) {
+      return console.error('could not connect to postgres', err);
+    }
+    client.query('SELECT * FROM cars', function(err, result) {
+      if(err) {
+        return console.error('error running query', err);
+      }
+      //console.log(result);
+      res.json( result );
+      //output: Tue Jan 15 2013 19:12:47 GMT-600 (CST)
+      client.end();
+    });
+  });
+
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -76,6 +79,5 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
-
 
 module.exports = app;
