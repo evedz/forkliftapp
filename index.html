@@ -28,20 +28,49 @@
 
 <div ng-controller="tableCtrl" class="container">
     <div class="row">
+        <form class="form-horizontal" action="api/cars" method="post">
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="carName">Car Name</label>
+                <div class="col-sm-6">
+                    <input type="text" name="name" class="form-control" id="carName" placeholder="enter car name...">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label"for="carCapacity">Car Capacity</label>
+                <div class="col-sm-6">
+                    <input type="text" name="capacity" class="form-control" id="carCapacity" placeholder="enter car capacity...">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default">Add Car</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <div class="row">
         <div class="col-md-12">
-            <table class="table table-bordered">
+            <table class="table table-striped">
                 <thead>
                     <tr>
+                        <td>Delete</td>
                         <td>ID</td>
                         <td>Name</td>
                         <td>Capacity</td>
+                        <td>Edit</td>
                     </tr>
                 </thead>
                 <tbody >
                     <tr ng-repeat="car in cars">
+                        <td><button class="btn btn-danger" type="button">Delete</button></td>
                         <td>{{ car.id }}</td>
                         <td>{{ car.name }}</td>
                         <td>{{ car.capacity }}</td>
+                        <td><button class="btn btn-primary" type="button">Edit</button></td>
                     </tr>
                 </tbody>
             </table>
