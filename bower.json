@@ -1,0 +1,22 @@
+{
+  "name": "forklift",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Maxim Kochetov <maxkochetov@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/evedz/forkliftapp",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.0",
+    "bootstrap": "^3.3.6"
+  }
+}
