@@ -26,32 +26,59 @@
     </div>
 </nav>
 
+<div class="modal fade" id="js-edit-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Edit</h4>
+            </div>
+            <div class="modal-body">
+                <form id="js-editSubmitId" class="form-horizontal" action="api/cars" method="post">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="carName">Car Name</label>
+                        <div class="col-sm-6">
+                            <input type="text" name="name" class="form-control" id="editCarName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label"for="carCapacity">Car Capacity</label>
+                        <div class="col-sm-6">
+                            <input type="text" name="capacity" class="form-control" id="editCarCapacity">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button id="editSaveChanges" type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div ng-controller="tableCtrl" class="container">
     <div class="row">
         <div class="jumbotron">
             <h3 class="col-sm-offset-2">Add a new car</h3>
             <form class="form-horizontal" action="api/cars" method="post">
-
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for="carName">Car Name</label>
                     <div class="col-sm-6">
                         <input type="text" name="name" class="form-control" id="carName" placeholder="enter car name...">
                     </div>
                 </div>
-
                 <div class="form-group">
                     <label class="col-sm-2 control-label"for="carCapacity">Car Capacity</label>
                     <div class="col-sm-6">
                         <input type="text" name="capacity" class="form-control" id="carCapacity" placeholder="enter car capacity...">
                     </div>
                 </div>
-
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                         <button type="submit" class="btn btn-default">Add Car</button>
                     </div>
                 </div>
-
             </form>
         </div>
     </div>
@@ -69,11 +96,20 @@
                 </thead>
                 <tbody >
                     <tr ng-repeat="car in cars">
-                        <td><button class="btn btn-danger" type="button">Delete</button></td>
+                        <td><button class="btn btn-danger" type="button" ng-click="deleteCar(car.id)">Delete</button></td>
                         <td>{{ car.id }}</td>
                         <td>{{ car.name }}</td>
                         <td>{{ car.capacity }}</td>
-                        <td><button class="btn btn-primary" type="button">Edit</button></td>
+                        <td><!-- Button trigger modal -->
+                            <button type="button"
+                                    data-carId="{{ car.id }}"
+                                    data-carName="{{ car.name }}"
+                                    data-carCapacity="{{ car.capacity }}"
+                                    ng-click="itemInfo(car.id,car.name,car.capacity)"
+                                    class="btn btn-primary" data-toggle="modal" data-target="#js-edit-modal">
+                                Edit
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
             </table>

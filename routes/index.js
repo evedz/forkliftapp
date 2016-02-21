@@ -31,4 +31,14 @@ router.delete('/api/cars/:id', function (req, res) {
     });
 });
 
+router.post('/api/cars/update/:id', function (req, res) {
+    client.connect(function(err) {
+        if(err) {return console.error('could not connect to postgres', err);}
+        client.query("UPDATE cars SET name = $1, capacity = $2 WHERE id = $3;", [req.body.name,req.body.capacity,req.params.id],function(err, result) {
+            if(err) {return console.error('error running query', err);}
+            res.status(201).json(req.body);
+        });
+    });
+});
+
 module.exports = router;
