@@ -16,7 +16,7 @@ router.post('/api/cars', function(req, res, next) {
         if(err) {return console.error('could not connect to postgres', err);}
         client.query("INSERT INTO cars(name, capacity) VALUES ($1, $2)", [req.body.name,req.body.capacity],function(err, result) {
             if(err) {return console.error('error running query', err);}
-            res.status(201).json(req.body);
+            res.redirect('/');
         });
     });
 });

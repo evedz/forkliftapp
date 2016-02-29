@@ -1,8 +1,15 @@
 body {
-  padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
   color: #00B7FF;
+}
+
+.fl-table-hover tbody tr {
+  cursor: pointer;
+}
+
+.fl-table-center td {
+  text-align: center;
 }

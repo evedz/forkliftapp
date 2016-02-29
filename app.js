@@ -35,7 +35,7 @@ app.use('/api/cars', function(req, res) {
     if(err) {
       return console.error('could not connect to postgres', err);
     }
-    client.query('SELECT * FROM cars', function(err, result) {
+    client.query('SELECT * FROM cars ORDER BY id ASC', function(err, result) {
       if(err) {
         return console.error('error running query', err);
       };

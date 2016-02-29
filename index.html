@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Forklift App</title>
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="public/stylesheets/style.css">
 </head>
 <body>
 
@@ -48,8 +49,13 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button id="editSaveChanges" type="submit" class="btn btn-primary">Save changes</button>
+                        <div class="row">
+                            <div class="col-sm-6 col-sm-offset-4">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button id="editSaveChanges" type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
+                            <div class="col-sm-offset-2"></div>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -84,30 +90,31 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <table class="table table-striped">
+            <table class="table table-hover fl-table-hover fl-table-center">
                 <thead>
                     <tr>
-                        <td>Delete</td>
                         <td>ID</td>
                         <td>Name</td>
                         <td>Capacity</td>
-                        <td>Edit</td>
+                        <td>Delete</td>
                     </tr>
                 </thead>
                 <tbody >
-                    <tr ng-repeat="car in cars">
-                        <td><button class="btn btn-danger" type="button" ng-click="deleteCar(car.id)">Delete</button></td>
+                    <tr ng-repeat="car in cars"
+                        data-carId="{{ car.id }}"
+                        data-carName="{{ car.name }}"
+                        data-carCapacity="{{ car.capacity }}"
+                        ng-click="itemInfo(car.id,car.name,car.capacity)"
+                        data-toggle="modal" data-target="#js-edit-modal"
+                    >
+
                         <td>{{ car.id }}</td>
                         <td>{{ car.name }}</td>
                         <td>{{ car.capacity }}</td>
-                        <td><!-- Button trigger modal -->
-                            <button type="button"
-                                    data-carId="{{ car.id }}"
-                                    data-carName="{{ car.name }}"
-                                    data-carCapacity="{{ car.capacity }}"
-                                    ng-click="itemInfo(car.id,car.name,car.capacity)"
-                                    class="btn btn-primary" data-toggle="modal" data-target="#js-edit-modal">
-                                Edit
+
+                        <td>
+                            <button class="btn btn-danger btn-sm" type="button" ng-click="deleteCar(car.id)">
+                                <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
                             </button>
                         </td>
                     </tr>
