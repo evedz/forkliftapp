@@ -1,17 +1,23 @@
-var forkApp = angular.module('forkApp', []).run(['$rootScope', '$http', function ($rootScope, $http) {
-    $rootScope.getData = (function getData(){
-        $http({
-            method: 'GET',
-            url: '/api/cars'
-        }).then(function successCallback(response) {
-            $rootScope.cars = response.data.rows;
-        }, function errorCallback(response) {
-            console.log('error' + response);
-        });
-    })();
-}]);
+var forkApp = angular.module('forkApp', []);
 
-angular.module('forkApp').controller('tableCtrl', ['$scope', '$rootScope', '$http', function ($scope, $rootScope, $http) {
+forkApp.factory('carsFactory', function ($rootScope, $http) {
+    return {
+        getCars: function () {
+            return $http.get('/api/cars').then (function successCallback(response) {
+                $rootScope.cars = response.data.rows;
+                toastr.success('New data has been fetched successfully!');
+            }, function errorCallback(response) {
+                toastr.error('Error happened. Visit console for details.');
+                console.error(response);
+            });
+        }
+    }
+});
+
+forkApp.controller('tableCtrl', ['$scope', '$rootScope', '$http', 'carsFactory', function ($scope, $rootScope, $http, carsFactory) {
+
+    carsFactory.getCars();
+
     $scope.postCar = function (car) {
         $http({
             method: 'POST',
@@ -21,32 +27,50 @@ angular.module('forkApp').controller('tableCtrl', ['$scope', '$rootScope', '$htt
                 capacity: car.capacity
             }
         }).then(function successCallback(response) {
-            $scope.updated = response.config.data;
-            $rootScope.cars = $rootScope.cars.concat($scope.updated);
+            toastr.info("Posted '" + response.data[0] + "' with capacity " + response.data[1]);
+            carsFactory.getCars();
         }, function errorCallback(response) {
-            console.error('Something went wrong...');
+            toastr.error(response);
         });
     };
+
     $scope.deleteCar = function (whichCar) {
         $http({
             method: 'DELETE',
             url: '/api/cars/' + whichCar
         }).then(function successCallback(response) {
-            window.location = location;
+            toastr.warning('deleted ' + response.config.url);
+            carsFactory.getCars();
         }, function errorCallback(response) {
-            console.error('Something went wrong...');
+            toastr.error(response);
         });
     };
-    $scope.updateCar = function (whichCar) {
-        $http({
-            method: 'POST',
-            url: '/api/cars/update/' + whichCar
-        });
-    };
-    $scope.itemInfo = function (id, name, capacity) {
-        $('#editCarName').val(name);
-        $('#editCarCapacity').val(capacity);
-        $('#editSaveChanges').attr({"ng-click": "updateCar(" + id + ")"});
-        $('#js-editSubmitId').attr({"action": "api/cars/update/" + id});
+
+    $scope.setItemInfo = function (id, name, capacity) {
+
+        $scope.editCar = {};
+
+        $scope.editCar.id = id;
+        $scope.editCar.name = name;
+        $scope.editCar.capacity = capacity;
+
+        $scope.updateCar = function () {
+
+            $http({
+                method: 'PUT',
+                url: '/api/cars/' + $scope.editCar.id,
+                data: {
+                    name: $scope.editCar.name,
+                    capacity: $scope.editCar.capacity
+                }
+            }).then(function successCallback(response) {
+                $('#js-edit-modal').modal('hide');
+                toastr.success('SUCCESS');
+                carsFactory.getCars();
+            }, function errorCallback(response) {
+                console.error('Something went wrong...');
+            });
+
+        };
     };
 }]);

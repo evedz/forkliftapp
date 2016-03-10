@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Forklift App</title>
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="node_modules/toastr/build/toastr.min.css">
     <link rel="stylesheet" href="public/stylesheets/style.css">
 </head>
 <body>
@@ -28,46 +29,81 @@
     </div>
 </nav>
 
-<div class="modal fade" id="js-edit-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Edit</h4>
-            </div>
-            <div class="modal-body">
-                <form id="js-editSubmitId" class="form-horizontal" action="api/cars" method="post">
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label" for="carName">Car Name</label>
+<div ng-controller="tableCtrl" class="container">
 
-                        <div class="col-sm-6">
-                            <input type="text" name="name" class="form-control" id="editCarName">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label" for="carCapacity">Car Capacity</label>
+    <div class="modal fade" id="js-edit-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Edit</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="js-editSubmitId" class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label" for="carName">ID</label>
 
-                        <div class="col-sm-6">
-                            <input type="text" name="capacity" class="form-control" id="editCarCapacity">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <div class="row">
-                            <div class="col-sm-6 col-sm-offset-4">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                <button id="editSaveChanges" type="submit" class="btn btn-primary">Save changes</button>
+                            <div class="col-sm-6">
+                                <input
+                                        disabled
+                                        ng-model="editCar.id"
+                                        type="text"
+                                        name="editCarId"
+                                        class="form-control"
+                                        id="editCarId">
                             </div>
-                            <div class="col-sm-offset-2"></div>
                         </div>
-                    </div>
-                </form>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label" for="carName">
+                                Car Name
+                            </label>
+
+                            <div class="col-sm-6">
+                                <input
+                                        ng-model="editCar.name"
+                                        type="text"
+                                        name="editCarName"
+                                        class="form-control"
+                                        id="editCarName">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label" for="carCapacity">
+                                Car Capacity
+                            </label>
+
+                            <div class="col-sm-6">
+                                <input
+                                        ng-model="editCar.capacity"
+                                        type="text"
+                                        name="editCarCapacity"
+                                        class="form-control"
+                                        id="editCarCapacity">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="row">
+                                <div class="col-sm-6 col-sm-offset-4">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                                        Close
+                                    </button>
+                                    <button
+                                            ng-click="updateCar()"
+                                            id="editSaveChanges"
+                                            class="btn btn-primary">
+                                        Save changes
+                                    </button>
+                                </div>
+                                <div class="col-sm-offset-2"></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div ng-controller="tableCtrl" class="container">
     <div class="row">
         <div class="jumbotron">
             <h3 class="col-sm-offset-2">Add a new car</h3>
@@ -137,7 +173,7 @@
                     <td>
                         <button class="btn btn-sm"
                                 type="button"
-                                ng-click="itemInfo(car.id,car.name,car.capacity)"
+                                ng-click="setItemInfo(car.id,car.name,car.capacity)"
                                 data-toggle="modal"
                                 data-target="#js-edit-modal">
                             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
@@ -161,6 +197,7 @@
 <script src="/bower_components/jquery/dist/jquery.min.js"></script>
 <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="/bower_components/angular/angular.min.js"></script>
+<script src="node_modules/toastr/build/toastr.min.js"></script>
 <script src="/public/javascripts/main.js"></script>
 
 </body>
